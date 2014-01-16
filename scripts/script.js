@@ -28,8 +28,6 @@ function xtrak(){
 		data.push("\n"+uid,usr,hdt,opt.join(','));
 	});
 
-	publish(data,'ExtractedFBList.txt');
-	/*
 	$('body').find('[download]').remove();
 	
 	const MIME_TYPE = 'text/plain';
@@ -40,6 +38,9 @@ function xtrak(){
 	link.textContent = "Save as CSV";
 	link.download = "file.csv";
   link.href = window.URL.createObjectURL(bb);
+
+	window.open(link);
+  /*
 	document.body.appendChild(link);
 	
 	if($('body').find('[download]').length != 0){
