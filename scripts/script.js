@@ -36,46 +36,14 @@ function xtrak(){
 
 	var link = document.createElement("a");
 	link.textContent = "Save as CSV";
-	link.download = "file.csv";
+	link.download = "FB"+new Date().getTime()+".csv";
   link.href = window.URL.createObjectURL(bb);
 
-	window.open(link);
-  /*
+	//window.open(link); //debug only
+
 	document.body.appendChild(link);
 	
 	if($('body').find('[download]').length != 0){
 		link.click();
 	}
-	*/
 };
-
-function publish(data, filename) {
-
-    if (!window.BlobBuilder && window.WebKitBlobBuilder) {
-        window.BlobBuilder = window.WebKitBlobBuilder;
-    }
-
-    fs.root.getFile(filename, {
-        create: true
-    }, function (fileEntry) {
-
-        // Create a FileWriter object for our FileEntry (log.txt).
-        fileEntry.createWriter(function (fileWriter) {
-
-            fileWriter.onwriteend = function (e) {
-                console.log('Write completed.');
-            };
-
-            fileWriter.onerror = function (e) {
-                console.log('Write failed: ' + e.toString());
-            };
-
-            var builder = new BlobBuilder();
-            builder.append(data);
-            var blob = builder.getBlob();
-            fileWriter.write(blob);
-
-        }, errorHandler);
-
-    }, errorHandler);
-}
