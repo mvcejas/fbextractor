@@ -1,24 +1,80 @@
 test();
 
 function test(){
-	if( (/facebook\.com/i).test(window.location) ){
+	if( (/facebook\.com\/search/i).test(window.location) ){
 		xtrak();
 	}
 	else
-		alert('This extension only works on FB.');
-}
+		alert('This extension works on FB search.');
+};
 
 function xtrak(){
-
-	var name = $('[data-bt="{"ct":"title"}"]')
+	var user = $('[data-bt*=id][data-bt*=rank]')
+		, name = $('[data-bt="{"ct":"title"}"]')
 		, head = $('[data-bt="{"ct":"sub_headers"}"]')
-		, snip = $('[data-bt="{"ct":"snippets"}"]');
+		, snip = $('[data-bt="{"ct":"snippets"}"]')
+		, data = new Array();
 
 	name.each(function(a,b){
-		//console.log($('a',b).text(),head.eq(a).text());
-		snip.eq(a).find('div:eq(0)').each(function(a,b){
-			console.log(b.innerText);
+		var uid = $.trim(user.eq(a).data().bt.id)
+			,	usr = $.trim($('a',b).text())
+			,	hdt = $.trim(head.eq(a).text())
+			, opt = new Array();
+
+		snip.eq(a).find('._ajw').each(function(a,b){
+			opt.push($.trim(b.innerText));
 		});
+
+		data.push("\n"+uid,usr,hdt,opt.join(','));
 	});
 
+	publish(data,'ExtractedFBList.txt');
+	/*
+	$('body').find('[download]').remove();
+	
+	const MIME_TYPE = 'text/plain';
+
+  var bb = new Blob([data], {type: MIME_TYPE});
+
+	var link = document.createElement("a");
+	link.textContent = "Save as CSV";
+	link.download = "file.csv";
+  link.href = window.URL.createObjectURL(bb);
+	document.body.appendChild(link);
+	
+	if($('body').find('[download]').length != 0){
+		link.click();
+	}
+	*/
+};
+
+function publish(data, filename) {
+
+    if (!window.BlobBuilder && window.WebKitBlobBuilder) {
+        window.BlobBuilder = window.WebKitBlobBuilder;
+    }
+
+    fs.root.getFile(filename, {
+        create: true
+    }, function (fileEntry) {
+
+        // Create a FileWriter object for our FileEntry (log.txt).
+        fileEntry.createWriter(function (fileWriter) {
+
+            fileWriter.onwriteend = function (e) {
+                console.log('Write completed.');
+            };
+
+            fileWriter.onerror = function (e) {
+                console.log('Write failed: ' + e.toString());
+            };
+
+            var builder = new BlobBuilder();
+            builder.append(data);
+            var blob = builder.getBlob();
+            fileWriter.write(blob);
+
+        }, errorHandler);
+
+    }, errorHandler);
 }
