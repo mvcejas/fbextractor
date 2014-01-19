@@ -4,7 +4,7 @@ Go();
 
 function Go(){
 	if( (/facebook\.com\/search/i).test(window.location) ){
-		console.log('started analyzing page...');
+		Log('Started analyzing page...');
 		CheckResults();
 	}
 	else
@@ -52,19 +52,29 @@ function Extract(){
 }
 
 function CheckResults(){
-	console.log($('#pageFooter').length);
+	var count = 1;
 	pagecheck = setInterval(function(){
 		var eop = $("div:contains('End of results')").length;
 		if(eop==0){
-			console.log('still checking...');
+			Log('Scanning elements...('+(count++)+')');
 			$('html,body').animate({
 				scrollTop: $('#pageFooter').offset().top
 			},2000)
 		}
 		else{
-			console.log('done checking...');
+			Log('Scanning completed...');
+			// clear page check
 			clearInterval(pagecheck);
-			Clearing();
+			// wait 10s to completely load page
+			// before saving all data
+			Log('Exporting data in 10 seconds...');
+			setTimeout(function(){
+				$('html,body').animate({
+					scrollTop: $('#pageFooter').offset().top
+				});
+				setTimeout(Extract,300);
+			},10000);
+			//Clearing(); useless!
 		}
 	},interval);
 }
@@ -84,4 +94,9 @@ function Clearing(){
 			},300);
 		}
 	},interval);
+}
+
+function Log(txt){
+	$('#chrome-ext-alert').remove();
+	$('body').append('<div style="position:fixed;z-index:1024;top:0;right:0;background:white;color:black;font-size:20px;padding:2px 10px;" id="chrome-ext-alert">'+txt+'</div>');
 }

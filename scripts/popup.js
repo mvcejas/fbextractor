@@ -3,11 +3,11 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-	document.getElementById('xtrak').onclick = function(){
+	document.getElementById('xtrak').onclick = function(e){
 		chrome.tabs.executeScript(null,{ file: "scripts/jquery.js" },function(){
 			chrome.tabs.executeScript(null,{ file: "scripts/script.js" });
 		});
+		window.close();
 	};
-
 
 });
