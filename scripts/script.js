@@ -18,6 +18,7 @@ function Extract(){
 		, snip = $('[data-bt="{"ct":"snippets"}"]')
 		, data = new Array();
 
+	console.log($(document.title).replace(/\s+/g,'_'));
 	name.each(function(a,b){
 		var uid = $.trim(user.eq(a).data().bt.id)
 			,	usr = $.trim($('a',b).text())
@@ -69,14 +70,7 @@ function CheckResults(){
 			// before saving all data
 			Log('Exporting data in 10 seconds...');
 			setTimeout(function(){
-				$('html,body').animate({
-					scrollTop: $('#pageFooter').offset().top
-				});
-				setTimeout(Extract,300);
-				setTimeout(Log('Data exported!'),1000);
-				setTimeout(function(){
-					$('#chrome-ext-alert').fadeOut();
-				},10000)
+				Completed();
 			},10000);
 			//Clearing(); useless!
 		}
@@ -103,4 +97,15 @@ function Clearing(){
 function Log(txt){
 	$('#chrome-ext-alert').remove();
 	$('body').append('<div style="position:fixed;z-index:1024;top:0;right:0;background:white;color:black;font-size:20px;padding:2px 10px;" id="chrome-ext-alert">'+txt+'</div>');
+}
+
+function Completed(){
+	$('html,body').animate({
+		scrollTop: $('#pageFooter').offset().top
+	});
+	setTimeout(Extract,300);
+	setTimeout(Log('Data exported!'),1000);
+	window.onkeypress = function(){
+		$('#chrome-ext-alert').fadeOut();
+	};
 }
