@@ -73,6 +73,10 @@ function CheckResults(){
 					scrollTop: $('#pageFooter').offset().top
 				});
 				setTimeout(Extract,300);
+				setTimeout(Log('Data exported!'),1000);
+				setTimeout(function(){
+					$('#chrome-ext-alert').fadeOut();
+				},10000)
 			},10000);
 			//Clearing(); useless!
 		}
