@@ -6,7 +6,7 @@ AutoItSetOption("MouseCoordMode", 1)
 
 WinWaitActive("[CLASS:Chrome_WidgetWin_1]")
 
-MsgBox(0,"t",@ScriptDir & @CRLF & @ScriptFullPath)
+;MsgBox(0,"t",@ScriptDir & @ScriptFullPath)
 
 Func Main()
    Send("!d")
