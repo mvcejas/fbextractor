@@ -1,14 +1,17 @@
-test();
+var pagecheck, clearing, interval = 2000;
 
-function test(){
+Go();
+
+function Go(){
 	if( (/facebook\.com\/search/i).test(window.location) ){
-		xtrak();
+		console.log('started analyzing page...');
+		CheckResults();
 	}
 	else
 		alert('This extension works on FB search.');
 };
 
-function xtrak(){
+function Extract(){
 	var user = $('[data-bt*=id][data-bt*=rank]')
 		, name = $('[data-bt="{"ct":"title"}"]')
 		, head = $('[data-bt="{"ct":"sub_headers"}"]')
@@ -46,4 +49,39 @@ function xtrak(){
 	if($('body').find('[download]').length != 0){
 		link.click();
 	}
-};
+}
+
+function CheckResults(){
+	console.log($('#pageFooter').length);
+	pagecheck = setInterval(function(){
+		var eop = $("div:contains('End of results')").length;
+		if(eop==0){
+			console.log('still checking...');
+			$('html,body').animate({
+				scrollTop: $('#pageFooter').offset().top
+			},2000)
+		}
+		else{
+			console.log('done checking...');
+			clearInterval(pagecheck);
+			Clearing();
+		}
+	},interval);
+}
+
+function Clearing(){
+	clearing = setInterval(function(){
+		var a = $("div:contains('Loading more results')").length;
+		console.log('Clearing...',a);
+		if(a==0){
+			clearInterval(clearing)
+			$('html,body').animate({
+				scrollTop: $('#pageFooter').offset().top,
+				complete: function(){
+				console.log('Saving...');
+				Extract();
+				}
+			},300);
+		}
+	},interval);
+}
