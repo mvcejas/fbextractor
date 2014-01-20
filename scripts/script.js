@@ -73,14 +73,10 @@ function CheckResults(){
 		}
 		else{
 			Log('Scanning completed...');
-			// clear page check
-			clearInterval(pagecheck);
 			// wait 10s to completely load page
 			// before saving all data
 			Log('Exporting data...');
-			setTimeout(function(){
-				Completed();
-			},1000);
+			Stop();
 			//Clearing(); useless!
 		}
 	},interval);
