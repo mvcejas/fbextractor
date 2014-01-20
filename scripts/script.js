@@ -18,7 +18,6 @@ function Extract(){
 		, snip = $('[data-bt="{"ct":"snippets"}"]')
 		, data = new Array();
 
-	console.log($(document.title).replace(/\s+/g,'_'));
 	name.each(function(a,b){
 		var uid = $.trim(user.eq(a).data().bt.id)
 			,	usr = $.trim($('a',b).text())
