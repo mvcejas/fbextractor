@@ -10,6 +10,10 @@ $(document).on('click','#chromeExtStop',function(){
 	Stop();
 });
 
+$(document).click(function(){
+	$('#chromeExtUI').fadeOut();
+});
+
 function Start(){
 	if( (/facebook\.com\/search/i).test(window.location) ){
 		Log('Started analyzing page...');
@@ -113,9 +117,6 @@ function Completed(){
 	});
 	setTimeout(Extract,300);
 	setTimeout(Log('Data exported!'),1000);
-	$('#chomeExtUI').mouseover(function(){
-		$('#chromeExtAlert').fadeOut();
-	});
 	$('#uiButtonStop').remove();
 }
 
