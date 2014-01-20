@@ -3,7 +3,8 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-	document.getElementById('xtrak').onclick = function(e){
+	document.getElementById('start').onclick = function(e){
+		chrome.tabs.insertCSS(null,{file: "assets/style.css"});
 		chrome.tabs.executeScript(null,{ file: "scripts/jquery.js" },function(){
 			chrome.tabs.executeScript(null,{ file: "scripts/script.js" });
 		});

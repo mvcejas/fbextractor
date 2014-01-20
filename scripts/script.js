@@ -1,10 +1,20 @@
 var pagecheck, clearing, interval = 2000;
 
-Go();
+Start();
 
-function Go(){
+$(document).on('click','#chromeExtStart',function(){
+	Start();
+});
+
+$(document).on('click','#chromeExtStop',function(){
+	Stop();
+});
+
+function Start(){
 	if( (/facebook\.com\/search/i).test(window.location) ){
 		Log('Started analyzing page...');
+		$('#chromeExtStop').show();
+		$('#chromeExtStart').hide();
 		CheckResults();
 	}
 	else
@@ -56,7 +66,7 @@ function CheckResults(){
 	pagecheck = setInterval(function(){
 		var eop = $("div:contains('End of results')").length;
 		if(eop==0){
-			Log('Scanning elements...('+(count++)+')');
+			Log('Scanning elements ('+(count++)+')');
 			$('html,body').animate({
 				scrollTop: $('#pageFooter').offset().top
 			},2000)
@@ -67,10 +77,10 @@ function CheckResults(){
 			clearInterval(pagecheck);
 			// wait 10s to completely load page
 			// before saving all data
-			Log('Exporting data in 10 seconds...');
+			Log('Exporting data...');
 			setTimeout(function(){
 				Completed();
-			},10000);
+			},1000);
 			//Clearing(); useless!
 		}
 	},interval);
@@ -94,8 +104,11 @@ function Clearing(){
 }
 
 function Log(txt){
-	$('#chrome-ext-alert').remove();
-	$('body').append('<div style="position:fixed;z-index:1024;top:0;right:0;background:white;color:black;font-size:20px;padding:2px 10px;" id="chrome-ext-alert">'+txt+'</div>');
+	$('#chromeExtUI').remove();
+	$('body').append('<div class="chromeExtUI" id="chromeExtUI"></div>');
+	$('#chromeExtUI').append('<div class="chromeExtAlert" id="chromeExtAlert">'+txt+'</div>');
+	$('#chromeExtUI').append('<button class="uiExtButton" id="chromeExtStop">Stop Scanning</button>');
+	$('#chromeExtUI').append('<button class="uiExtButton" id="chromeExtStart">Go Scraping</button>');
 }
 
 function Completed(){
@@ -104,7 +117,15 @@ function Completed(){
 	});
 	setTimeout(Extract,300);
 	setTimeout(Log('Data exported!'),1000);
-	window.onkeypress = function(){
-		$('#chrome-ext-alert').fadeOut();
-	};
+	$('#chomeExtUI').mouseover(function(){
+		$('#chromeExtAlert').fadeOut();
+	});
+	$('#uiButtonStop').remove();
+}
+
+function Stop(){
+	clearInterval(pagecheck);
+	setTimeout(Extract,300);
+	$('#chromeExtStop').hide();
+	$('#chromeExtStart').show();
 }

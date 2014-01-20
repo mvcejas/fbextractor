@@ -3,7 +3,7 @@
 	"description": "This tool extract data from Facebook search people.",
 	"version": "1.0",
 	"manifest_version": 2,
-	"permissions": ["<all_urls>"],
+	"permissions": ["<all_urls>","tabs"],
 	"icons": {
 		"48": "icons/icon48.png"
 	},
