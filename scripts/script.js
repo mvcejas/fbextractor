@@ -10,7 +10,7 @@ $(document).on('click','#chromeExtStop',function(){
 	Stop();
 });
 
-$(document).click(function(){
+$('body').keypress(function(){
 	$('#chromeExtUI').fadeOut();
 });
 
